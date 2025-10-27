@@ -3,5 +3,6 @@
 
 int main() {
     printf("execlp success\n");
+    printf("I'm parent\n");
     return 0;
 }
