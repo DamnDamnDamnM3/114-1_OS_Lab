@@ -16,9 +16,6 @@ int main() {
             exit(1);
         } 
         else if (pid == 0) {
-            // 子行程：執行 programA
-            printf("Child [%d] executing programA...\n", getpid());
-
             if (execlp("./programA", "programA", NULL) == -1) {
                 perror("execlp failed");
                 exit(1);
