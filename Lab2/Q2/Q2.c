@@ -26,7 +26,5 @@ int main() {
 
     // 父行程等待所有子行程結束
     while (wait(NULL) > 0);
-
-    printf("Parent [%d] all children finished.\n", getpid());
     return 0;
 }
