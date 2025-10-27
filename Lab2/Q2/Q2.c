@@ -10,8 +10,8 @@
 int main() {
     pid_t pid;
 
-    /* 建立三個 child（父進程每次 fork，子 process 跳出迴圈） */
-    for(int i = 0; i < 3; i++)
+    /* 建立4個 child（父進程每次 fork，子 process 跳出迴圈） */
+    for(int i = 0; i < 4; i++)
     {
         pid = fork();
         if (pid == 0) {
@@ -24,12 +24,7 @@ int main() {
     /* 父進程等待所有子程序結束 */
     while(wait(NULL) > 0);
 
-    if(pid > 0)
-    {
-        /* 只在父程序印出訊息（可對照 lab2-1 範例） */
-        printf("[%d] Hello world!\n", getpid());
-    }
-    else if(pid == 0)
+    if(pid == 0)
     {
         /* 在子程序中用 execlp 跳到 programA 執行 */
         if (execlp("./programA", "programA", NULL) == -1)  /*利用execlp使process跳到別的程式執行*/
