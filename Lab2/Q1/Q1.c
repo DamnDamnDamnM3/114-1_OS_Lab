@@ -1,28 +1,29 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include <stdio.h>      // printf()
+#include <sys/types.h>  // pid_t
+#include <unistd.h>     // fork(), getpid()
+#include <sys/wait.h>   // wait()
 
 int main() {
     pid_t pid;
 
-    pid = fork(); // 建立子程序
-
-    if (pid < 0) {
-        perror("fork failed");
-        exit(1);
-    } 
-    else if (pid == 0) {
-        // 子程序執行區
-        printf("[%d] Child process running.\n", getpid());
-        exit(0);
-    } 
-    else {
-        // 父程序執行區
-        wait(NULL); // 等待子程序結束
-        printf("[%d] Hello world!\n", getpid());
+    // 建立多個 child process
+    for (int i = 0; i < 5; i++) {
+        pid = fork();  // 建立子行程
+        if (pid < 0) {
+            perror("fork failed");
+            return 1;
+        } else if (pid == 0) {
+            // 子行程印出自己的 PID
+            printf("[%d] Hello world!\n", getpid());
+            return 0; // 子行程結束，不再進入下一次迴圈
+        }
+        // 父行程繼續下一次迴圈
     }
 
+    // 父行程等待所有子行程結束
+    while (wait(NULL) > 0);
+
+    // 父行程結束前印一次
+    printf("[%d] Hello world!\n", getpid());
     return 0;
 }
