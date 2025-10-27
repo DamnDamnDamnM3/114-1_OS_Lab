@@ -1,30 +1,31 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include <stdio.h>      /* printf */
+#include <sys/types.h>  /* pid_t */
+#include <unistd.h>     /* fork(), getpid() */
+#include <stdlib.h>     /* exit() */
+#include <sys/wait.h>   /* wait() */
 
 int main() {
     pid_t pid;
 
     for (int i = 0; i < 3; i++) {
-        pid = fork();
+        pid = fork();                     // 建立子行程
+    }
 
-        if (pid < 0) {
-            perror("fork failed");
-            exit(1);
-        } 
-        else if (pid == 0) {
-            execlp("./programA", "programA", NULL);
+    while (wait(NULL) > 0);               // 父行程等待所有子行程結束
+
+    if (pid > 0) {                        // 父行程
+        printf("I'm parent\n");
+    }
+    else if (pid == 0) {                  // 子行程
+        if (execlp("./programA", "programA", NULL) == -1) {
             perror("execlp failed");
             exit(1);
         }
-        // 父行程不做事，繼續下一圈
     }
-
-    // 父行程等待所有子行程結束
-    while (wait(NULL) > 0);
-    printf("I'm parent\n");
+    else {
+        perror("fork failed");
+        exit(1);
+    }
 
     return 0;
 }
