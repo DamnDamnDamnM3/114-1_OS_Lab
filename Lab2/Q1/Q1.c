@@ -7,7 +7,7 @@ int main() {
     pid_t pid;
 
     // 建立多個 child process
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 7; i++) {
         pid = fork();  // 建立子行程
         if (pid < 0) {
             perror("fork failed");
