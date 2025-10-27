@@ -51,26 +51,25 @@ int main() {
         printf("[+] Connection accepted from %s:%d\n",
                inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
 
-        if (fork() == 0) {  // 子程序來處理此連線
+        if (fork() == 0) {  // 子程序處理
             close(serverSocket);
             while (1) {
                 memset(buffer, 0, BUF_SIZE);
                 ssize_t r = recv(newSocket, buffer, BUF_SIZE-1, 0);
-                if (r < 0) {
-                    perror("[-] Error in receiving data");
-                    break;
-                } else if (r == 0) {
-                    // client 關閉
+                if (r <= 0) {
+                    // 客戶端強制關閉或連線中斷
+                    printf("[-] Disconnected from %s:%d\n",
+                           inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
                     break;
                 }
                 buffer[r] = '\0';
+
                 if (strcmp(buffer, ":exit") == 0) {
                     printf("[-] Disconnected from %s:%d\n",
                            inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
                     break;
                 } else {
                     printf("Client : %s\n", buffer);
-                    // 回傳資料給 client
                     if (send(newSocket, buffer, strlen(buffer), 0) < 0) {
                         perror("[-] Error in sending data");
                         break;
@@ -80,7 +79,6 @@ int main() {
             close(newSocket);
             exit(0);
         }
-        // 父程序
         close(newSocket);
     }
 
