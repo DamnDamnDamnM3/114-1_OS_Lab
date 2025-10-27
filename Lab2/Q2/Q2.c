@@ -7,6 +7,7 @@
 int main() {
     pid_t pid;
 
+    // 建立三個子程序
     for (int i = 0; i < 3; i++) {
         pid = fork();
 
@@ -15,16 +16,18 @@ int main() {
             exit(1);
         } 
         else if (pid == 0) {
-            // 子程序：執行 programA
+            // 子程序執行 programA
             execlp("./programA", "programA", NULL);
-            perror("execlp failed"); // execlp 失敗才會執行這行
+            perror("execlp failed");
             exit(1);
         }
+        // 父程序不做任何事，直接繼續下一個迴圈
     }
 
-    // 父程序：等待所有子程序結束
+    // 父程序等待所有子程序結束
     while (wait(NULL) > 0);
-    printf("[%d] All child processes finished.\n", getpid());
+
+    printf("I'm parent\n");
 
     return 0;
 }
