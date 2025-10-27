@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <stdio.h> /* printf */
+#include <sys/types.h> /* pid_t */
+#include <unistd.h> /* fork(), getpid() */
+#include <stdlib.h> /* exit() */
+#include <sys/wait.h> /* wait() */
 
 int main() {
   pid_t pid;
