@@ -1,32 +1,59 @@
-#include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
+#include #include #include #include #include #include #include #include
+#define PORT 4444
+#define IP_ADDRESS "127.0.0.1"
 
-int main() {
-    pid_t pid;
+int main()
+{
 
-    for (int i = 0; i < 4; i++) {
-        pid = fork();
-        if (pid < 0) {
-            perror("fork failed");
-            exit(1);
-        }
+int clientSocket;
+struct sockaddr_in serverAddr;
+int checkConnect, checkRecv;
+char buffer[1024];
 
-        if (pid == 0) {
-            // 子行程執行 programA
-            if (execlp("./programA", "programA", NULL) == -1) {
-                perror("execlp failed");
-                exit(1);
-            }
-        } else {
-            // 父行程印出
-            printf("I'm parent\n");
-        }
-    }
+/* replace this line with socket() */
+if (/* check error */)
+{
+printf("[-]Error in creating Client Socket.\n");
+exit(1);
+}
+printf("[+]Client Socket is created.\n");
 
-    // 父行程等待所有子行程結束
-    while (wait(NULL) > 0);
-    return 0;
+memset(&serverAddr, '\0', sizeof(serverAddr));
+serverAddr.sin_family = AF_INET;
+serverAddr.sin_port = htons(PORT);
+serverAddr.sin_addr.s_addr = inet_addr(IP_ADDRESS);
+
+/* replace this line with connect() */
+if (/* check error */)
+{
+printf("[-]Error in connection.\n");
+exit(1);
+}
+printf("[+]Connected to Server.\n");
+
+while (1)
+{
+printf("Client : ");
+scanf("%s", &buffer[0]);
+/* replace this line with send() */
+
+if (strcmp(buffer, ":exit") == 0)
+{
+close(clientSocket);
+printf("[-]Disconnected from server.\n");
+exit(1);
+}
+
+/* replace this line with recv() */
+if (/* check error */)
+{
+printf("[-]Error in receiving data.\n");
+}
+else
+{
+printf("Server : %s\n", buffer);
+}
+}
+
+return 0;
 }
