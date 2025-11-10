@@ -1,0 +1,1 @@
+gcc Q1.c -o app -lpthread
