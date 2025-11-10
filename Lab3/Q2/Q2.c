@@ -95,7 +95,7 @@ void *child(void *arg)
 
     // 取得當前行程與執行緒ID
     printf("Child pid = %d\n", getpid());
-    printf("Child tid = %ld, range = [%d, %d)\n",
+    printf("Child tid = %ld\n",
            syscall(SYS_gettid), startIndex, endIndex);
 
     // 等待主程式發出開始訊號
