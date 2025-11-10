@@ -94,8 +94,8 @@ void *child(void *arg)
     int endIndex = range[1];
 
     // 取得當前行程與執行緒ID
-    printf("Child pid = %d\n", getpid());
-    printf("Child tid = %ld\n",
+    printf("Process Id = %d\n", getpid());
+    printf("Thread Id = %ld\n",
            syscall(SYS_gettid), startIndex, endIndex);
 
     // 等待主程式發出開始訊號
@@ -120,8 +120,8 @@ int main()
     pthread_t *threads;                  // 儲存所有子執行緒的 ID
     struct timespec timeStart, timeEnd;  // 紀錄執行時間
 
-    printf("Main pid = %d\n", getpid());
-    printf("Main tid = %ld\n", syscall(SYS_gettid));
+    /*printf("Main pid = %d\n", getpid());
+    printf("Main tid = %ld\n", syscall(SYS_gettid));*/
 
     readMatrix();  // 讀取矩陣資料
 
