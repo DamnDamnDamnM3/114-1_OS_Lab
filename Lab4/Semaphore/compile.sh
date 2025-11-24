@@ -1,0 +1,1 @@
+gcc -pthread app.c -o app
